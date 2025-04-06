@@ -37,6 +37,7 @@
       display: flex;
       gap: 20px;
       padding: 10px 20px;
+      flex-wrap: wrap;
     }
 
     nav a {
@@ -97,6 +98,7 @@
       border: 1px solid #ccc;
       padding: 12px;
       text-align: left;
+      vertical-align: top;
     }
 
     th {
@@ -174,6 +176,7 @@
   <nav>
     <a onclick="showSection('home')">Home</a>
     <a onclick="showSection('search')">Search</a>
+    <a onclick="showSection('commercial')">Commercial</a>
     <a onclick="showSection('help')">Help</a>
     <a onclick="showSection('contact')">Contact</a>
   </nav>
@@ -184,7 +187,7 @@
 
     <div class="grid">
 
-      <a class="card" href="https://www.google.com/search?q=lifejacket+safety+site:maritimenz.govt.nz" target="_blank">
+      <a class="card" href="https://www.coastguard.nz/boating-education/emergency-situations/" target="_blank">
         <img src="emergency.jpg" alt="Emergency">
         <div class="card-content">
           <h3>In an Emergency</h3>
@@ -196,7 +199,7 @@
         </div>
       </a>
 
-      <a class="card" href="https://www.google.com/search?q=recreational+boating+safety+site:maritimenz.govt.nz" target="_blank">
+      <a class="card" href="https://www.coastguard.nz/boating-education/" target="_blank">
         <img src="recreational.jpg" alt="Recreational">
         <div class="card-content">
           <h3>Recreational</h3>
@@ -208,7 +211,7 @@
         </div>
       </a>
 
-      <a class="card" href="https://www.google.com/search?q=commercial+vessels+rules+site:maritimenz.govt.nz" target="_blank">
+      <a class="card" href="#" onclick="showSection('commercial')">
         <img src="commercial.jpg" alt="Commercial">
         <div class="card-content">
           <h3>Commercial</h3>
@@ -220,7 +223,7 @@
         </div>
       </a>
 
-      <a class="card" href="https://www.google.com/search?q=public+marine+info+site:maritimenz.govt.nz" target="_blank">
+      <a class="card" href="https://environment.govt.nz/acts-and-regulations/acts/marine-protection/" target="_blank">
         <img src="public.jpg" alt="Public Info">
         <div class="card-content">
           <h3>Public Info</h3>
@@ -245,7 +248,7 @@
       Use this tool to verify seafarers tickets. Find out a seafarer’s name, certificate type and any special conditions on their ticket.
       <br/><br/>
       <strong>Enter the certificate number</strong><br/>
-      Examples of certificate numbers: MEC2-12345, n06 0099
+      Examples: MEC2-12345, n06 0099
     </p>
 
     <div class="search-box">
@@ -256,13 +259,51 @@
     <div id="result"></div>
   </div>
 
+  <div id="commercial" class="section">
+    <h2>Commercial Maritime Operations</h2>
+    <p>Find out what is required to operate commercially in the maritime industry in New Zealand.</p>
+
+    <table>
+      <tr>
+        <th>Category</th>
+        <th>Details</th>
+        <th>More Info</th>
+      </tr>
+      <tr>
+        <td>Seafarer Licensing</td>
+        <td>Apply 8 weeks ahead. Processing times are affected by high volume.</td>
+        <td><a href="https://nzqa.govt.nz" target="_blank">NZQA Certification</a></td>
+      </tr>
+      <tr>
+        <td>Operator Licensing</td>
+        <td>Allow 8–12 weeks. Site visits and SMS may extend times.</td>
+        <td><a href="https://www.transport.govt.nz" target="_blank">Transport NZ</a></td>
+      </tr>
+      <tr>
+        <td>Ship Registration</td>
+        <td>10 days to 6 weeks depending on transaction type.</td>
+        <td><a href="https://www.maritimeregister.org.nz" target="_blank">Maritime Register</a></td>
+      </tr>
+      <tr>
+        <td>Exemptions</td>
+        <td>Custom reviews by legal, tech, and ops teams.</td>
+        <td><a href="https://www.legislation.govt.nz/" target="_blank">NZ Legislation</a></td>
+      </tr>
+      <tr>
+        <td>Pollution Prevention</td>
+        <td>Guidance for ship operators under MARPOL.</td>
+        <td><a href="https://environment.govt.nz" target="_blank">NZ Environment</a></td>
+      </tr>
+    </table>
+  </div>
+
   <div id="help" class="section">
     <h2>Help</h2>
-    <p>If you're having trouble using this service, please ensure the information you're entering is correct.</p>
+    <p>Need help using this tool?</p>
     <ul>
-      <li>Search using full or partial name</li>
-      <li>You can also use certificate numbers</li>
-      <li>If no results show up, the certificate may not be in the public database yet</li>
+      <li>Search by name or certificate number</li>
+      <li>Check if the certificate is in the public database</li>
+      <li>Contact us if you still need assistance</li>
     </ul>
   </div>
 
@@ -280,23 +321,22 @@
 
   <script>
     function showSection(id) {
-      const sections = document.querySelectorAll('.section');
-      sections.forEach(section => section.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(section =>
+        section.classList.remove('active')
+      );
       document.getElementById(id).classList.add('active');
     }
 
-    const API_KEY = 'AIzaSyCZBabW2LPVQ710RFc7gqxjWba83Xknojs';
-    const SHEET_ID = '1lwU1ffiQooHS5B6pJieRABOGraY_ITjnlIavcpLwetQ';
-    const SHEET_NAME = 'Seafarers';
-
     async function verifyCertificate() {
+      const API_KEY = 'AIzaSyCZBabW2LPVQ710RFc7gqxjWba83Xknojs';
+      const SHEET_ID = '1lwU1ffiQooHS5B6pJieRABOGraY_ITjnlIavcpLwetQ';
+      const SHEET_NAME = 'Seafarers';
       const query = document.getElementById('searchInput').value.toLowerCase().trim();
       const resultDiv = document.getElementById('result');
       resultDiv.innerHTML = 'Verifying...';
 
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
-
       try {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
         const res = await fetch(url);
         const data = await res.json();
         const rows = data.values;
@@ -317,16 +357,12 @@
         }
 
         let html = '<table><tr>';
-        headers.forEach(header => {
-          html += `<th>${header}</th>`;
-        });
+        headers.forEach(header => html += `<th>${header}</th>`);
         html += '</tr>';
 
         matches.forEach(row => {
           html += '<tr>';
-          headers.forEach((_, i) => {
-            html += `<td>${row[i] || ''}</td>`;
-          });
+          headers.forEach((_, i) => html += `<td>${row[i] || ''}</td>`);
           html += '</tr>';
         });
 
