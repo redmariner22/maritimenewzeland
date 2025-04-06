@@ -312,11 +312,14 @@
     <p>Maritime New Zealand<br/>
        1 Grey Street, Wellington 6011<br/>
        Phone: +64 4 473 0011<br/>
-       Email: seafarers@maritimenz.net</p>
+       Email: <a href="mailto:seafarers@maritimenz.net">seafarers@maritimenz.net</a></p>
   </div>
 
   <footer>
     &copy; 2025 Maritime New Zealand. All rights reserved.
+    <div id="footer-info" style="font-weight: bold; margin-top: 10px;">
+      <p><strong>Important:</strong> Ensure your seafarer certification is up to date. For any issues or concerns, reach out to us through the Contact Us page.</p>
+    </div>
   </footer>
 
   <script>
@@ -325,6 +328,14 @@
         section.classList.remove('active')
       );
       document.getElementById(id).classList.add('active');
+      
+      // Toggle the footer info visibility based on the active section
+      const footerInfo = document.getElementById('footer-info');
+      if (id === 'contact') {
+        footerInfo.style.display = 'none';  // Hide on Contact Us page
+      } else {
+        footerInfo.style.display = 'block';  // Show on all other pages
+      }
     }
 
     async function verifyCertificate() {
